@@ -55,7 +55,6 @@ let state = {
   activeScales: new Set([0,1]),
   score:0, total:0, currentStreak:0,
   historyDots:[],
-  showRefs: true,
   currentQ: null,
   answered: false,
   theme: 'auto',
@@ -210,7 +209,6 @@ function nextQuestion() {
   document.getElementById('answerDisplay').classList.remove('revealed');
   document.getElementById('feedbackMsg').textContent='';
   document.getElementById('feedbackMsg').className='feedback-msg';
-  document.getElementById('referenceSongs').classList.remove('visible');
   document.getElementById('nextBtn').classList.remove('visible');
   document.getElementById('scaleNotesTag').style.display='none';
 
@@ -259,11 +257,6 @@ function checkAnswer(chosenName) {
     document.getElementById('notesDisplay').textContent=state.currentQ.notesText;
   }
 
-  if (state.showRefs&&state.currentQ.item.songs) {
-    const ref=document.getElementById('referenceSongs');
-    ref.textContent='♪ '+state.currentQ.item.songs.join(' · ');
-    ref.classList.add('visible');
-  }
 
   if (state.exercise==='scales') {
     const {item,rootMidi}=state.currentQ;
@@ -339,6 +332,11 @@ function showPage(page) {
     document.getElementById('nav-about').classList.add('active');
     document.getElementById('topbarMode').textContent = 'About';
     closeSidebar();
+  } else if (page === 'settings') {
+    document.getElementById('page-settings').classList.add('active');
+    document.getElementById('nav-settings').classList.add('active');
+    document.getElementById('topbarMode').textContent = 'Settings';
+    closeSidebar();
   } else {
     document.getElementById('page-trainer').classList.add('active');
     switchExercise(page);
@@ -357,10 +355,82 @@ function switchExercise(ex) {
   document.getElementById('notesDisplay').textContent='press play to begin';
   document.getElementById('feedbackMsg').textContent='';
   document.getElementById('feedbackMsg').className='feedback-msg';
-  document.getElementById('referenceSongs').classList.remove('visible');
   document.getElementById('nextBtn').classList.remove('visible');
   document.getElementById('scaleNotesTag').style.display='none';
   buildItemToggles(); buildAnswerGrid(); closeSidebar();
+  showAd();
+}
+
+const AD_DATA = {
+  intervals: {
+    icon: '♩',
+    title: 'Interval Training',
+    body: 'Listen for the distance between two notes. Sing the interval internally before you answer.',
+  },
+  chords: {
+    icon: '♪',
+    title: 'Chord Recognition',
+    body: 'Focus on the overall colour — bright or dark, stable or tense — rather than individual notes.',
+  },
+  scales: {
+    icon: '♫',
+    title: 'Scale Identification',
+    body: 'Hear the mood of the whole scale. Each mode has a distinct emotional character.',
+  },
+};
+
+let adCloseTimer = null;
+let adSkipTimer  = null;
+
+function showAd() {
+  const ex   = state.exercise;
+  const data = AD_DATA[ex] || { icon: '♬', title: ex, body: '' };
+  const container = document.getElementById('adContainer');
+
+  container.innerHTML = `
+    <div class="ad-content">
+      <button class="ad-close" onclick="closeAd()" aria-label="Close">✕</button>
+      <div class="ad-label">Now playing</div>
+      <div class="ad-icon">${data.icon}</div>
+      <div class="ad-title">${data.title}</div>
+      <div class="ad-body">${data.body}</div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle"
+          style="display:block;width:300px;height:100px;"
+          data-ad-client="ca-pub-9438810281290905"
+          data-ad-slot="auto"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+      <div class="ad-timer-bar"><div class="ad-timer-fill" id="adTimerFill"></div></div>
+      <button class="ad-skip" id="adSkipBtn" disabled onclick="closeAd()">Skip in 2s</button>
+    </div>`;
+
+  container.style.display = 'flex';
+
+  // Push AdSense unit
+  try {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  } catch(e) {}
+
+  // Enable skip after 2 s
+  if (adSkipTimer)  clearTimeout(adSkipTimer);
+  if (adCloseTimer) clearTimeout(adCloseTimer);
+
+  adSkipTimer = setTimeout(() => {
+    const btn = document.getElementById('adSkipBtn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Skip →'; btn.classList.add('ready'); }
+  }, 2000);
+
+  // Auto-close after 3 s
+  adCloseTimer = setTimeout(closeAd, 3000);
+}
+
+function closeAd() {
+  clearTimeout(adCloseTimer);
+  clearTimeout(adSkipTimer);
+  const container = document.getElementById('adContainer');
+  container.style.display = 'none';
 }
 
 function openSidebar() {
@@ -381,18 +451,15 @@ function setPlayMode(mode, btn) {
 
 function setRoot(root, btn) {
   state.rootSetting=root;
-  document.querySelectorAll('.sidebar-settings .pill-btn[id^="rb-"]').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.pill-btn[id^="rb-"]').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-function toggleRefs() {
-  state.showRefs=!state.showRefs;
-  document.getElementById('refToggle').classList.toggle('active',state.showRefs);
-}
+
 
 function setTheme(theme, btn) {
   state.theme = theme;
-  document.querySelectorAll('.sidebar-settings .pill-btn[id^="theme"]').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.pill-btn[id^="theme"]').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   applyTheme();
 }
