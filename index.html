@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9438810281290905" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -27,6 +28,9 @@
     <button class="nav-item" id="nav-about" onclick="showPage('about')">
       <span class="nav-icon">◎</span> About
     </button>
+    <button class="nav-item" id="nav-settings" onclick="showPage('settings')">
+      <span class="nav-icon">⚙</span> Settings
+    </button>
   </div>
 
   <div class="nav-section">
@@ -42,28 +46,6 @@
     </button>
   </div>
 
-  <div class="sidebar-settings">
-    <div class="sb-label">Root note</div>
-    <div class="sb-pills">
-      <button class="pill-btn active" id="rb-random" onclick="setRoot('random',this)">Random</button>
-      <button class="pill-btn" id="rb-C4" onclick="setRoot('C4',this)">C</button>
-      <button class="pill-btn" id="rb-D4" onclick="setRoot('D4',this)">D</button>
-      <button class="pill-btn" id="rb-E3" onclick="setRoot('E3',this)">E</button>
-      <button class="pill-btn" id="rb-F3" onclick="setRoot('F3',this)">F</button>
-      <button class="pill-btn" id="rb-G3" onclick="setRoot('G3',this)">G</button>
-      <button class="pill-btn" id="rb-A3" onclick="setRoot('A3',this)">A</button>
-    </div>
-    <div class="sb-label">Hints</div>
-    <div class="sb-pills">
-      <button class="pill-btn active" id="refToggle" onclick="toggleRefs()">Show hints</button>
-    </div>
-    <div class="sb-label">Theme</div>
-    <div class="sb-pills">
-      <button class="pill-btn" id="themeDark" onclick="setTheme('dark',this)">Dark</button>
-      <button class="pill-btn" id="themeWhite" onclick="setTheme('white',this)">White</button>
-      <button class="pill-btn active" id="themeAuto" onclick="setTheme('auto',this)">Auto</button>
-    </div>
-  </div>
 
   <div class="sidebar-footer">
     Listen carefully.<br>Trust your ear.<br>Piano synthesis.
@@ -162,7 +144,7 @@
       <div class="pillar">
         <div class="pillar-num">03 — ASSOCIATE</div>
         <div class="pillar-title">Musical hooks</div>
-        <div class="pillar-text">Enable hints to link each sound to a familiar song. Over time the association fades — the interval remains.</div>
+          <div class="pillar-text">Link each sound to a familiar melody, then let the interval itself become the reference.</div>
       </div>
       <div class="pillar">
         <div class="pillar-num">04 — REPEAT</div>
@@ -180,6 +162,38 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       Begin Training
     </button>
+  </div>
+</div>
+
+<div class="page" id="page-settings">
+  <div class="main">
+    <div class="main-panel">
+      <h1 class="hero-title">Settings</h1>
+      <div class="settings-panel">
+        <div class="sb-label">Root note</div>
+        <div class="sb-pills">
+          <button class="pill-btn active" id="rb-random" onclick="setRoot('random',this)">Random</button>
+          <button class="pill-btn" id="rb-C4" onclick="setRoot('C4',this)">C</button>
+          <button class="pill-btn" id="rb-C#4" onclick="setRoot('C#4',this)">C#</button>
+          <button class="pill-btn" id="rb-D4" onclick="setRoot('D4',this)">D</button>
+          <button class="pill-btn" id="rb-D#4" onclick="setRoot('D#4',this)">D#</button>
+          <button class="pill-btn" id="rb-E4" onclick="setRoot('E4',this)">E</button>
+          <button class="pill-btn" id="rb-F4" onclick="setRoot('F4',this)">F</button>
+          <button class="pill-btn" id="rb-F#4" onclick="setRoot('F#4',this)">F#</button>
+          <button class="pill-btn" id="rb-G4" onclick="setRoot('G4',this)">G</button>
+          <button class="pill-btn" id="rb-G#4" onclick="setRoot('G#4',this)">G#</button>
+          <button class="pill-btn" id="rb-A4" onclick="setRoot('A4',this)">A</button>
+          <button class="pill-btn" id="rb-A#4" onclick="setRoot('A#4',this)">A#</button>
+          <button class="pill-btn" id="rb-B4" onclick="setRoot('B4',this)">B</button>
+        </div>
+        <div class="sb-label">Theme</div>
+        <div class="sb-pills">
+          <button class="pill-btn" id="themeDark" onclick="setTheme('dark',this)">Dark</button>
+          <button class="pill-btn" id="themeWhite" onclick="setTheme('white',this)">White</button>
+          <button class="pill-btn active" id="themeAuto" onclick="setTheme('auto',this)">Auto</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -222,15 +236,17 @@
       <div class="divider"></div>
       <div class="answer-grid" id="answerGrid"></div>
       <div class="feedback-msg" id="feedbackMsg"></div>
-      <div class="reference-songs" id="referenceSongs"></div>
       <button class="next-btn" id="nextBtn" onclick="nextQuestion(); playCurrentSound()">Next →</button>
     </div>
   </div>
+
+  <div class="ad-container" id="adContainer" style="display:none;"></div>
 
   <div class="settings-panel" id="settingsPanel">
     <h3 id="settingsTitle">Intervals to practice</h3>
     <div class="toggle-row" id="itemToggles"></div>
   </div>
+
 </div>
 </div><script src="script.js"></script>
 </body>
