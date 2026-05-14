@@ -228,10 +228,6 @@ body {
 .feedback-msg { font-size: 0.78rem; min-height: 1rem; text-align: center; letter-spacing: 0.04em; }
 .feedback-msg.correct { color: var(--green); }
 .feedback-msg.wrong   { color: var(--red); }
-
-.reference-songs { font-size: 0.63rem; color: var(--muted2); text-align: center; line-height: 1.7; display: none; }
-.reference-songs.visible { display: block; }
-
 .scale-notes-tag {
   display: none;
   font-size: 0.63rem; color: var(--muted2);
@@ -428,3 +424,99 @@ body {
   cursor: pointer; transition: all 0.18s;
 }
 .about-start-btn:hover { background: rgba(200,169,110,0.09); transform: translateY(-1px); }
+
+/* ── Ad overlay ── */
+.ad-container {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  animation: adFadeIn 0.2s ease;
+}
+@keyframes adFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ad-content {
+  position: relative;
+  background: var(--bg2);
+  border: 0.5px solid var(--border2);
+  border-radius: 18px;
+  padding: 2.2rem 2.4rem 2rem;
+  max-width: 340px; width: 90%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+  animation: adSlideUp 0.25s cubic-bezier(.4,0,.2,1);
+}
+@keyframes adSlideUp {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ad-label {
+  font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.2rem;
+  border: 0.5px solid var(--border);
+  border-radius: 99px; padding: 0.22rem 0.7rem;
+  display: inline-block;
+}
+
+.ad-icon {
+  font-size: 2.2rem; margin-bottom: 0.7rem; line-height: 1;
+}
+
+.ad-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem; color: var(--accent2);
+  font-weight: 700; margin-bottom: 0.5rem; line-height: 1.25;
+}
+
+.ad-body {
+  font-size: 0.7rem; color: var(--muted2);
+  line-height: 1.75; margin-bottom: 1.5rem;
+}
+
+.ad-timer-bar {
+  height: 2px; background: var(--border);
+  border-radius: 99px; overflow: hidden; margin-bottom: 1.1rem;
+}
+.ad-timer-fill {
+  height: 100%; background: var(--accent);
+  border-radius: 99px;
+  animation: adTimer 3s linear forwards;
+}
+@keyframes adTimer {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.ad-skip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0.45rem 1.1rem;
+  background: transparent; border: 0.5px solid var(--border);
+  border-radius: 8px; color: var(--muted);
+  font-family: 'DM Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.18s;
+}
+.ad-skip:hover { border-color: var(--accent); color: var(--accent); }
+.ad-skip.ready { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.07); }
+
+.ad-close {
+  position: absolute; top: 0.85rem; right: 1rem;
+  font-size: 1.1rem; color: var(--muted);
+  cursor: pointer; line-height: 1;
+  transition: color 0.15s; background: none; border: none;
+  font-family: inherit;
+}
+.ad-close:hover { color: var(--text); }
+
+.ad-slot {
+  margin: 0 auto 1rem;
+  min-height: 100px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg3); border: 0.5px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+}
