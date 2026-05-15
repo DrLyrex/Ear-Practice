@@ -189,23 +189,54 @@ body {
 ══════════════════════════════════════ */
 .topbar-account-btn {
   margin-left: auto;
-  background: none; border: 0.5px solid var(--border);
+  background: none; border: none;
   border-radius: 50%; padding: 0;
   cursor: pointer; transition: border-color 0.18s;
-  width: 34px; height: 34px;
+  min-width: 34px; height: 34px;
+  padding: 0 0.5rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  outline: none;
 }
-.topbar-account-btn:hover { border-color: var(--accent); }
+.topbar-account-btn:focus,
+.topbar-account-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.topbar-account-btn:hover { border-color: transparent; }
+
+.topbar-account-btn:hover .topbar-avatar {
+  border-color: var(--accent);
+}
 
 .topbar-avatar {
   width: 28px; height: 28px; border-radius: 50%;
   background: var(--bg3);
+  border: 0.5px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.7rem; color: var(--accent2); font-weight: 500;
   overflow: hidden;
 }
 .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.topbar-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  margin-left: 0.55rem;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(237, 122, 49, 0.12);
+  color: var(--accent2);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.topbar-streak-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  fill: var(--accent2);
+}
 
 .account-dropdown {
   position: fixed; top: 58px; right: 1rem;
@@ -311,8 +342,82 @@ body {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem; color: var(--text); font-weight: 700; line-height: 1.2;
 }
+.profile-streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  margin: 0.55rem 0 0;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(237, 122, 49, 0.1);
+  color: var(--accent2);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.profile-streak-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: var(--accent2);
+}
 .profile-email-text { font-size: 0.68rem; color: var(--muted2); margin-top: 3px; }
 .profile-member-since { font-size: 0.6rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.08em; }
+
+.profile-graph-panel {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.profile-graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+.profile-graph-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Playfair Display', serif;
+}
+.profile-graph-sub {
+  font-size: 0.68rem;
+  color: var(--muted2);
+}
+.profile-graph {
+  position: relative;
+  min-height: 220px;
+  width: 100%;
+}
+.profile-graph-svg {
+  width: 100%;
+  height: 100%;
+}
+.profile-graph-grid-line {
+  stroke: var(--border2);
+  stroke-width: 0.5;
+}
+.profile-graph-label {
+  fill: var(--muted2);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+}
+.profile-graph-value {
+  fill: var(--accent2);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+.profile-graph-point {
+  fill: var(--muted2);
+  opacity: 0.6;
+}
+.profile-graph-point.active {
+  fill: var(--accent2);
+  opacity: 1;
+}
 
 .profile-stats-grid {
   display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;

@@ -198,6 +198,12 @@
   <span class="topbar-mode" id="topbarMode">Home</span>
   <button class="topbar-account-btn" id="topbarAccountBtn" onclick="toggleAccountDropdown()" aria-label="Account">
     <div class="topbar-avatar" id="topbarAvatar">?</div>
+    <div class="topbar-streak" id="topbarStreak">
+      <svg class="topbar-streak-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2C8.7 6 7 9 7 12.5 7 16.6 10.4 20 14.5 20 17.6 20 20 17.6 20 14.5 20 10.4 16.6 7 12.5 7 12 4 12 2 12 2z"/>
+      </svg>
+      <span id="topbarStreakValue">0</span>
+    </div>
   </button>
 </div>
 
@@ -361,6 +367,12 @@
       </div>
       <div class="profile-hero-info">
         <h1 class="profile-display-name" id="profileDisplayName">Guest</h1>
+        <div class="profile-streak-badge" id="profileStreakBadge">
+          <svg class="profile-streak-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C8.7 6 7 9 7 12.5 7 16.6 10.4 20 14.5 20 17.6 20 20 17.6 20 14.5 20 10.4 16.6 7 12.5 7 12 4 12 2 12 2z"/>
+          </svg>
+          <span id="profileStreakValue">0</span>
+        </div>
         <div class="profile-email-text" id="profileEmail">—</div>
         <div class="profile-member-since" id="profileMemberSince"></div>
       </div>
@@ -383,6 +395,21 @@
         <div class="profile-stat-val" id="profileBestStreak">—</div>
         <div class="profile-stat-label">Best Streak</div>
       </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileDailyStreak">—</div>
+        <div class="profile-stat-label">Daily Streak</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileBestDailyStreak">—</div>
+        <div class="profile-stat-label">Best Daily</div>
+      </div>
+    </div>
+
+    <div class="profile-graph-panel">
+      <div class="profile-graph-header">
+        <div class="profile-graph-title">Exercises in the last 30 days</div>
+      </div>
+      <div class="profile-graph" id="profileExerciseGraph"></div>
     </div>
 
     <!-- Edit display name -->

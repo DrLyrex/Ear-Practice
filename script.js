@@ -94,6 +94,8 @@ var state = {
   activeChords: new Set([0,1,2,3]),
   activeScales: new Set([0,1]),
   score: 0, total: 0, currentStreak: 0, bestStreak: 0,
+  dailyStreak: 0, bestDailyStreak: 0, lastPracticeDate: '',
+  dailyExercises: {},
   historyDots: [],
   currentQ: null,
   answered: false,
@@ -117,6 +119,10 @@ function saveToLocalStorage() {
       total:           state.total,
       bestStreak:      state.bestStreak,
       currentStreak:   state.currentStreak,
+      dailyStreak:     state.dailyStreak,
+      bestDailyStreak: state.bestDailyStreak,
+      lastPracticeDate: state.lastPracticeDate,
+      dailyExercises:  state.dailyExercises,
       historyDots:     state.historyDots,
       theme:           state.theme,
       rootSetting:     state.rootSetting,
@@ -136,6 +142,10 @@ function loadFromLocalStorage() {
     state.total         = data.total         || 0;
     state.bestStreak    = data.bestStreak     || 0;
     state.currentStreak = data.currentStreak || 0;
+    state.dailyStreak     = data.dailyStreak     || 0;
+    state.bestDailyStreak = data.bestDailyStreak || 0;
+    state.lastPracticeDate = data.lastPracticeDate || '';
+    state.dailyExercises  = data.dailyExercises || {};
     state.historyDots   = data.historyDots   || [];
     if (data.theme)           { state.theme = data.theme; }
     if (data.rootSetting)     { state.rootSetting = data.rootSetting; }
@@ -185,6 +195,8 @@ window.signUpEmail = async function () {
       photoDataUrl: '',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       score: 0, total: 0, bestStreak: 0,
+      dailyStreak: 0, bestDailyStreak: 0, lastPracticeDate: '',
+      dailyExercises: {},
     });
     closeAuthModal();
   } catch (e) {
@@ -329,6 +341,10 @@ function initAuthListener() {
           state.score         = data.score         || 0;
           state.total         = data.total         || 0;
           state.bestStreak    = data.bestStreak     || 0;
+          state.dailyStreak     = data.dailyStreak     || 0;
+          state.bestDailyStreak = data.bestDailyStreak || 0;
+          state.lastPracticeDate = data.lastPracticeDate || '';
+          state.dailyExercises  = data.dailyExercises || {};
           state.currentStreak = data.currentStreak || 0;
           state.historyDots   = data.historyDots   || [];
           if (data.theme)           { state.theme = data.theme; applyTheme(); }
@@ -346,6 +362,7 @@ function initAuthListener() {
             photoDataUrl: '',
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             score: 0, total: 0, bestStreak: 0,
+            dailyStreak: 0, bestDailyStreak: 0, lastPracticeDate: '',
           });
         }
       } catch (e) {
@@ -386,6 +403,10 @@ async function saveProgress() {
       score:           state.score,
       total:           state.total,
       bestStreak:      state.bestStreak,
+      dailyStreak:     state.dailyStreak,
+      bestDailyStreak: state.bestDailyStreak,
+      lastPracticeDate: state.lastPracticeDate,
+      dailyExercises:  state.dailyExercises,
       currentStreak:   state.currentStreak,
       historyDots:     state.historyDots,
       theme:           state.theme,
@@ -397,6 +418,139 @@ async function saveProgress() {
   } catch (e) {
     console.warn('Firestore save failed (progress is still in localStorage):', e);
   }
+}
+
+function getTodayKey() {
+  var d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
+function updateDailyPractice() {
+  var today = getTodayKey();
+  if (state.lastPracticeDate === today) return false;
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  var yesterdayKey = yesterday.toISOString().slice(0, 10);
+  if (state.lastPracticeDate === yesterdayKey) {
+    state.dailyStreak = (state.dailyStreak || 0) + 1;
+  } else {
+    state.dailyStreak = 1;
+  }
+  state.lastPracticeDate = today;
+  if (state.dailyStreak > state.bestDailyStreak) {
+    state.bestDailyStreak = state.dailyStreak;
+  }
+  return true;
+}
+
+function recordDailyExercise() {
+  var today = getTodayKey();
+  state.dailyExercises = state.dailyExercises || {};
+  state.dailyExercises[today] = (state.dailyExercises[today] || 0) + 1;
+}
+
+function getLast30Days() {
+  var days = [];
+  var now = new Date();
+  for (var i = 29; i >= 0; i--) {
+    var d = new Date(now);
+    d.setDate(now.getDate() - i);
+    var key = d.toISOString().slice(0, 10);
+    days.push({ key: key, label: key.slice(5) });
+  }
+  return days;
+}
+
+function renderDailyExerciseGraph() {
+  var container = document.getElementById('profileExerciseGraph');
+  if (!container) return;
+  var days = getLast30Days();
+  var maxCount = 1;
+  var counts = days.map(function(day) {
+    var count = state.dailyExercises && state.dailyExercises[day.key] ? state.dailyExercises[day.key] : 0;
+    if (count > maxCount) maxCount = count;
+    return count;
+  });
+  container.innerHTML = '';
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 620 240');
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.classList.add('profile-graph-svg');
+  var width = 620, height = 240;
+  var padding = { left: 42, right: 12, top: 18, bottom: 30 };
+  var plotWidth = width - padding.left - padding.right;
+  var plotHeight = height - padding.top - padding.bottom;
+  var stepX = plotWidth / (days.length - 1);
+  var points = counts.map(function(count, idx) {
+    var x = padding.left + stepX * idx;
+    var y = padding.top + plotHeight - (plotHeight * (count / maxCount));
+    if (maxCount === 0) y = padding.top + plotHeight;
+    return { x: x, y: y, count: count, label: days[idx].label };
+  });
+
+  for (var lineIndex = 0; lineIndex <= 4; lineIndex++) {
+    var y = padding.top + (plotHeight / 4) * lineIndex;
+    var grid = document.createElementNS(svgNS, 'line');
+    grid.setAttribute('x1', padding.left);
+    grid.setAttribute('y1', y);
+    grid.setAttribute('x2', width - padding.right);
+    grid.setAttribute('y2', y);
+    grid.setAttribute('class', 'profile-graph-grid-line');
+    svg.appendChild(grid);
+    var yLabel = document.createElementNS(svgNS, 'text');
+    yLabel.setAttribute('x', padding.left - 8);
+    yLabel.setAttribute('y', y + 4);
+    yLabel.setAttribute('text-anchor', 'end');
+    yLabel.setAttribute('class', 'profile-graph-label');
+    yLabel.textContent = Math.round(maxCount * (4 - lineIndex) / 4);
+    svg.appendChild(yLabel);
+  }
+
+  var path = document.createElementNS(svgNS, 'path');
+  var pathData = points.map(function(point, idx) {
+    return (idx === 0 ? 'M' : 'L') + point.x + ' ' + point.y;
+  }).join(' ');
+  path.setAttribute('d', pathData);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', 'var(--accent2)');
+  path.setAttribute('stroke-width', '3');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  svg.appendChild(path);
+
+  points.forEach(function(point, idx) {
+    var circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', point.x);
+    circle.setAttribute('cy', point.y);
+    circle.setAttribute('r', '4');
+    circle.setAttribute('class', point.count ? 'profile-graph-point active' : 'profile-graph-point');
+    circle.setAttribute('data-count', point.count);
+    svg.appendChild(circle);
+    if (point.count > 0) {
+      var value = document.createElementNS(svgNS, 'text');
+      value.setAttribute('x', point.x);
+      value.setAttribute('y', point.y - 8);
+      value.setAttribute('text-anchor', 'middle');
+      value.setAttribute('class', 'profile-graph-value');
+      value.textContent = point.count;
+      svg.appendChild(value);
+    }
+  });
+
+  points.forEach(function(point, idx) {
+    if (idx % 5 === 0 || idx === points.length - 1) {
+      var text = document.createElementNS(svgNS, 'text');
+      text.setAttribute('x', point.x);
+      text.setAttribute('y', height - 8);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('class', 'profile-graph-label');
+      text.textContent = point.label.replace(/^0/, '');
+      svg.appendChild(text);
+    }
+  });
+
+  container.appendChild(svg);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -444,6 +598,9 @@ function updateAccountUI(user, photoOverride) {
   var dangerZone = document.getElementById('dangerZonePanel');
   if (dangerZone) dangerZone.style.display = isSignedIn ? 'block' : 'none';
 
+  var topbarStreakValue = document.getElementById('topbarStreakValue');
+  if (topbarStreakValue) topbarStreakValue.textContent = state.dailyStreak;
+
   if (user && user.metadata && user.metadata.creationTime) {
     var d = new Date(user.metadata.creationTime);
     document.getElementById('profileMemberSince').textContent =
@@ -460,6 +617,11 @@ function updateProfileStats() {
   document.getElementById('profileTotalAnswered').textContent = state.total;
   document.getElementById('profileAccuracy').textContent      = acc;
   document.getElementById('profileBestStreak').textContent    = state.bestStreak;
+  document.getElementById('profileDailyStreak').textContent   = state.dailyStreak;
+  document.getElementById('profileBestDailyStreak').textContent = state.bestDailyStreak;
+  var streakBadge = document.getElementById('profileStreakValue');
+  if (streakBadge) streakBadge.textContent = state.dailyStreak;
+  renderDailyExerciseGraph();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -753,6 +915,8 @@ window.nextQuestion = function () {
 
 function checkAnswer(chosenName) {
   if (state.answered||!state.currentQ) return;
+  updateDailyPractice();
+  recordDailyExercise();
   state.answered=true;
   var correct=state.currentQ.item.name===chosenName;
   state.total++;
@@ -895,6 +1059,11 @@ function switchExercise(ex) {
   document.getElementById('nextBtn').classList.remove('visible');
   document.getElementById('scaleNotesTag').style.display='none';
   buildItemToggles(); buildAnswerGrid(); closeSidebar();
+  if (updateDailyPractice()) {
+    updateProfileStats();
+    clearTimeout(window._saveTimer);
+    window._saveTimer = setTimeout(saveProgress, 1500);
+  }
   showAd();
 }
 
