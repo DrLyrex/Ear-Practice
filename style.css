@@ -914,3 +914,203 @@ body {
   letter-spacing: 0.07em; cursor: pointer; transition: all 0.18s;
 }
 .danger-zone-btn:hover { background: rgba(224,92,110,0.1); }
+/* ══════════════════════════════════════
+   JOYSTICK FAB BUTTON
+══════════════════════════════════════ */
+.joystick-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 80; /* sits below sidebar overlay (90), sidebar (100), ads (200), auth (300) */
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1.5px solid var(--border2);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 0 0 rgba(200,169,110,0);
+  /* hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.88);
+  transition: opacity 0.22s ease, transform 0.22s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.joystick-fab.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+.joystick-fab:hover {
+  background: var(--bg4);
+  transform: translateY(0) scale(1.08);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.55), 0 0 0 3px rgba(200,169,110,0.18);
+}
+.joystick-fab:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+.joystick-fab.behind {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px) scale(0.94);
+}
+
+/* ══════════════════════════════════════
+   CONTROLLER MODAL
+══════════════════════════════════════ */
+.controller-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.controller-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.controller-modal {
+  position: relative;
+  background: var(--bg2);
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  padding: 2.4rem 2.6rem;
+  width: min(680px, 92vw);
+  height: min(680px, 92vh);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1), opacity 0.22s ease;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.controller-overlay.open .controller-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.controller-modal-close {
+  position: absolute; top: 1rem; right: 1.1rem;
+  font-size: 1.1rem; color: var(--muted);
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; line-height: 1;
+  transition: color 0.15s;
+  z-index: 10;
+}
+.controller-modal-close:hover { color: var(--text); }
+.controller-modal-label {
+  font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.1rem;
+  border: 0.5px solid var(--border); border-radius: 99px;
+  padding: 0.22rem 0.7rem; display: inline-block;
+}
+.controller-modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--accent2); margin-bottom: 1.6rem; line-height: 1.2;
+}
+.controller-modal-body {
+  font-size: 0.72rem; color: var(--muted2); line-height: 1.8;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ══════════════════════════════════════
+   ALIEN CANVAS
+══════════════════════════════════════ */
+.alien-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  display: block;
+}
+/* cursor on canvas */
+.alien-canvas { cursor: crosshair; }
+
+/* ══════════════════════════════════════
+   ALIEN GAME HUD
+══════════════════════════════════════ */
+.alien-game-hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3.5rem 1rem 1.2rem;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+.alien-game-lives { display: flex; gap: 0.3rem; }
+.life-heart { font-size: 1.3rem; transition: transform 0.2s, opacity 0.2s; }
+.life-heart.active  { color: #e05555; }
+.life-heart.lost    { color: var(--border2); opacity: 0.4; }
+.alien-game-score-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 0.05rem; }
+.alien-game-score-label { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.18em; color: var(--muted); }
+.alien-game-score { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 500; color: var(--accent2); line-height: 1; }
+
+/* ══════════════════════════════════════
+   ALIEN QUIZ POPUP
+══════════════════════════════════════ */
+.alien-quiz-popup {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 30;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 1.1rem 1.4rem 1.2rem;
+  width: min(480px, 90%);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.alien-quiz-popup.visible { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+.alien-quiz-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem; text-align: center; }
+.alien-quiz-replay { display: block; margin: 0 auto 0.85rem; background: none; border: 1px solid var(--border2); border-radius: 99px; color: var(--accent); font-family: 'DM Mono', monospace; font-size: 0.68rem; padding: 0.3rem 1rem; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.alien-quiz-replay:hover { background: var(--accent); color: var(--bg); }
+.alien-quiz-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+.quiz-answer-btn { flex: 1 1 calc(50% - 0.5rem); min-width: 100px; max-width: 180px; padding: 0.55rem 0.7rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.75rem; cursor: pointer; transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.1s; text-align: center; }
+.quiz-answer-btn:hover:not(:disabled) { background: var(--bg3); border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.quiz-answer-btn.correct { background: rgba(80,200,100,0.15); border-color: #50c864; color: #50c864; }
+.quiz-answer-btn.wrong   { background: rgba(220,70,70,0.15);  border-color: #dc4646; color: #dc4646; }
+.quiz-answer-btn:disabled { cursor: default; }
+
+/* ══════════════════════════════════════
+   GAME OVER OVERLAY
+══════════════════════════════════════ */
+.alien-game-over { position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.78); border-radius: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; gap: 0.5rem; }
+.alien-game-over.visible { opacity: 1; pointer-events: all; }
+.game-over-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent2); }
+.game-over-sub { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem; }
+.game-over-score { font-family: 'DM Mono', monospace; font-size: 3.5rem; font-weight: 500; color: var(--accent); line-height: 1; }
+.game-over-restart { margin-top: 1.2rem; background: var(--accent); color: var(--bg); border: none; border-radius: 99px; font-family: 'DM Mono', monospace; font-size: 0.8rem; font-weight: 500; padding: 0.65rem 2rem; cursor: pointer; letter-spacing: 0.08em; transition: background 0.15s, transform 0.12s; }
+.game-over-restart:hover { background: var(--accent2); transform: translateY(-2px); }
+
+/* Ship safe zone — subtle gradient at bottom of canvas area */
+.controller-modal::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 100%);
+  border-radius: 0 0 20px 20px;
+  pointer-events: none;
+  z-index: 5;
+}
