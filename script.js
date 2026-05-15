@@ -99,7 +99,7 @@ var state = {
   historyDots: [],
   currentQ: null,
   answered: false,
-  theme: 'auto',
+  theme: 'dark',
 };
 
 // Current Firebase user (null = guest)
