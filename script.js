@@ -354,6 +354,7 @@ function initAuthListener() {
           if (data.activeScales)    { state.activeScales    = new Set(data.activeScales); }
           savedPhotoDataUrl = data.photoDataUrl || '';
           buildItemToggles(); buildAnswerGrid(); updateStats(); updateStreakBar();
+          if (updateDailyPractice()) { saveProgress(); }
         } else {
           // First sign-in — create user doc
           await db.collection('users').doc(user.uid).set({
@@ -378,6 +379,7 @@ function initAuthListener() {
       applyTheme();
       buildItemToggles();
       buildAnswerGrid();
+      if (updateDailyPractice()) { saveProgress(); }
       updateStats();
       updateStreakBar();
       updateAccountUI(null);
@@ -422,7 +424,10 @@ async function saveProgress() {
 
 function getTodayKey() {
   var d = new Date();
-  return d.toISOString().slice(0, 10);
+  var y = d.getFullYear();
+  var m = String(d.getMonth() + 1).padStart(2, '0');
+  var day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
 }
 
 function updateDailyPractice() {
@@ -430,7 +435,10 @@ function updateDailyPractice() {
   if (state.lastPracticeDate === today) return false;
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  var yesterdayKey = yesterday.toISOString().slice(0, 10);
+  var yd = yesterday.getFullYear() + '-' +
+    String(yesterday.getMonth() + 1).padStart(2, '0') + '-' +
+    String(yesterday.getDate()).padStart(2, '0');
+  var yesterdayKey = yd;
   if (state.lastPracticeDate === yesterdayKey) {
     state.dailyStreak = (state.dailyStreak || 0) + 1;
   } else {
@@ -455,8 +463,11 @@ function getLast30Days() {
   for (var i = 29; i >= 0; i--) {
     var d = new Date(now);
     d.setDate(now.getDate() - i);
-    var key = d.toISOString().slice(0, 10);
-    days.push({ key: key, label: key.slice(5) });
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    var key = y + '-' + m + '-' + day;
+    days.push({ key: key, label: m + '-' + day });
   }
   return days;
 }
@@ -619,6 +630,8 @@ function updateProfileStats() {
   document.getElementById('profileBestStreak').textContent    = state.bestStreak;
   var streakBadge = document.getElementById('profileStreakValue');
   if (streakBadge) streakBadge.textContent = state.dailyStreak;
+  var topbarStreakEl = document.getElementById('topbarStreakValue');
+  if (topbarStreakEl) topbarStreakEl.textContent = state.dailyStreak;
   renderDailyExerciseGraph();
 }
 
