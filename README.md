@@ -2,8 +2,6 @@
 
 A browser-based ear training app for musicians of all levels. Train your ability to recognize intervals, chords, and scales — all synthesized in real time with no audio samples required.
 
-**[→ Open the App]([eartrainer.site](https://eartrainer.site))**
-
 ---
 
 ## What It Does
