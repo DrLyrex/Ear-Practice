@@ -817,14 +817,17 @@ body {
 .pillar-num { font-size: 0.6rem; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
 .pillar-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.35rem; }
 .pillar-text { font-size: 0.66rem; color: var(--muted2); line-height: 1.7; }
-.about-quote {
-  background: var(--bg2); border-left: 2px solid var(--accent);
-  border-radius: 0 10px 10px 0; padding: 1.1rem 1.3rem; margin: 1.8rem 0;
-  font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--text); line-height: 1.6; font-style: italic;
-}
-.about-quote cite {
-  display: block; font-size: 0.6rem; color: var(--muted);
-  letter-spacing: 0.1em; text-transform: uppercase; font-style: normal; margin-top: 0.6rem;
+.about-signature {
+  display: block;
+  margin: 2rem 0 0;
+  text-align: right;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.35rem;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  padding-right: 2px;
+  opacity: 0.95;
 }
 .about-start-btn {
   margin-top: 2rem; display: inline-flex; align-items: center; gap: 10px;

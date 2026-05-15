@@ -264,42 +264,21 @@
 ════════════════════════════════════════════════ -->
 <div class="page" id="page-about">
   <div class="about-wrap">
-    <p class="about-hero-text">Built for <em>serious</em> musicians.</p>
-    <p class="about-intro">Ear training is the single highest-leverage skill a musician can develop. This app gives you a clean, focused environment to build that skill — no distractions, no subscriptions, no gimmicks.</p>
+    <h1 class="about-hero-text">About the Project</h1>
+    <p class="about-intro">Hi, I’m Lyre Zhukov.</p>
+    <p class="about-body">I’m a 17-year-old musician, and like most people serious about their craft, I knew I needed to work on my ear training. The problem? Every website I found was either hidden behind a massive paywall, looked like it hadn't been updated since 2005, or was just plain frustrating to use.</p>
+    <p class="about-body">I got tired of waiting for a better tool to show up, so I decided to build one myself.</p>
 
     <div class="about-divider"></div>
 
-    <h2 class="about-section-title">The three pillars</h2>
-    <div class="about-pillars">
-      <div class="pillar">
-        <div class="pillar-num">01</div>
-        <div class="pillar-title">Intervals</div>
-        <div class="pillar-text">The distance between two notes. Master these and you can transcribe anything by ear.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">02</div>
-        <div class="pillar-title">Chords</div>
-        <div class="pillar-text">Colour and tension. Learn to hear the emotion of a chord before you know its name.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">03</div>
-        <div class="pillar-title">Scales</div>
-        <div class="pillar-text">The modal palette. Each scale has a distinct mood — learn to recognise them instantly.</div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">04</div>
-        <div class="pillar-title">Streaks</div>
-        <div class="pillar-text">Consistency beats intensity. Ten minutes a day builds faster than hour-long sessions.</div>
-      </div>
-    </div>
+    <h2 class="about-section-title">By a Musician, For Musicians</h2>
+    <p class="about-body">I originally built this site as a personal tool to help me sharpen my own hearing. But as the project grew, I realized I probably wasn't the only person looking for a clean, effective, and modern way to practice.</p>
 
-    <div class="about-quote">
-      "The ear is the musician's most important instrument."
-      <cite>— Leopold Auer</cite>
-    </div>
-
-    <h2 class="about-section-title">How the sound is made</h2>
-    <p class="about-body">Every note is synthesised in real time using the Web Audio API — no samples, no files. A stack of harmonic partials with inharmonicity modelling recreates the characteristic brightness and decay of a piano string, complete with a noise burst for the key attack transient. The result is a consistent, clean reference tone across all registers.</p>
+    <h2 class="about-section-title">Why is it free?</h2>
+    <p class="about-body">Because learning music is hard enough as it is. You shouldn't have to deal with user interfaces that feel outdated or subscription fees just to train your ears.</p>
+    <p class="about-body">I’m publishing this for absolutely free because I want us all to get better at what we do. No catches, no gatekeeping — just a straightforward tool to help you hear music more clearly.</p>
+    <p class="about-body">Enjoy the training, and let's make something great.</p>
+    <div class="about-signature">— Lyre</div>
 
     <button class="about-start-btn" onclick="showPage('intervals')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -393,21 +372,13 @@
       </div>
       <div class="profile-stat">
         <div class="profile-stat-val" id="profileBestStreak">—</div>
-        <div class="profile-stat-label">Best Streak</div>
-      </div>
-      <div class="profile-stat">
-        <div class="profile-stat-val" id="profileDailyStreak">—</div>
-        <div class="profile-stat-label">Daily Streak</div>
-      </div>
-      <div class="profile-stat">
-        <div class="profile-stat-val" id="profileBestDailyStreak">—</div>
-        <div class="profile-stat-label">Best Daily</div>
+        <div class="profile-stat-label">Best Accuracy Streak</div>
       </div>
     </div>
 
     <div class="profile-graph-panel">
       <div class="profile-graph-header">
-        <div class="profile-graph-title">Exercises in the last 30 days</div>
+        <div class="profile-graph-title">Activity Graph</div>
       </div>
       <div class="profile-graph" id="profileExerciseGraph"></div>
     </div>

@@ -617,8 +617,6 @@ function updateProfileStats() {
   document.getElementById('profileTotalAnswered').textContent = state.total;
   document.getElementById('profileAccuracy').textContent      = acc;
   document.getElementById('profileBestStreak').textContent    = state.bestStreak;
-  document.getElementById('profileDailyStreak').textContent   = state.dailyStreak;
-  document.getElementById('profileBestDailyStreak').textContent = state.bestDailyStreak;
   var streakBadge = document.getElementById('profileStreakValue');
   if (streakBadge) streakBadge.textContent = state.dailyStreak;
   renderDailyExerciseGraph();
