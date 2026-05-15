@@ -440,6 +440,10 @@ function updateAccountUI(user, photoOverride) {
   var uploadBtn = document.getElementById('profileAvatarUploadBtn');
   if (uploadBtn) uploadBtn.style.display = isSignedIn ? 'flex' : 'none';
 
+  // Show / hide danger zone in settings
+  var dangerZone = document.getElementById('dangerZonePanel');
+  if (dangerZone) dangerZone.style.display = isSignedIn ? 'block' : 'none';
+
   if (user && user.metadata && user.metadata.creationTime) {
     var d = new Date(user.metadata.creationTime);
     document.getElementById('profileMemberSince').textContent =
@@ -536,6 +540,35 @@ window.saveDisplayName = async function () {
     setTimeout(function() { document.getElementById('profileEditPanel').style.display = 'none'; }, 1200);
   } catch (e) {
     errEl.textContent = 'Could not save. Try again.';
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  DELETE ACCOUNT
+// ═══════════════════════════════════════════════════════════
+window.confirmDeleteAccount = async function () {
+  if (!currentUser || !auth || !db) return;
+  var confirmed = window.confirm(
+    'Are you sure you want to permanently delete your account?\n\nAll your progress and data will be lost. This cannot be undone.'
+  );
+  if (!confirmed) return;
+  try {
+    // Delete Firestore user document first
+    await db.collection('users').doc(currentUser.uid).delete();
+    // Delete the Firebase Auth account
+    await currentUser.delete();
+    // Clear local storage and reset UI
+    try { localStorage.removeItem(LS_KEY); localStorage.removeItem('earTrainer_authSeen'); } catch(e) {}
+    updateAccountUI(null);
+    showPage('home');
+    alert('Your account has been deleted.');
+  } catch (e) {
+    if (e.code === 'auth/requires-recent-login') {
+      alert('For security, please sign out and sign back in before deleting your account.');
+    } else {
+      alert('Could not delete account. Please try again.');
+      console.warn('Delete account error:', e);
+    }
   }
 };
 

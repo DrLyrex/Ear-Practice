@@ -782,3 +782,27 @@ body {
   display: flex; align-items: center; justify-content: center;
   background: var(--bg3); border: 0.5px solid var(--border); border-radius: 8px; overflow: hidden;
 }
+/* ══════════════════════════════════════
+   DANGER ZONE
+══════════════════════════════════════ */
+.danger-zone {
+  border-color: rgba(224,92,110,0.25) !important;
+  margin-top: 1rem;
+}
+.danger-zone-label {
+  font-size: 0.58rem; color: var(--red);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.danger-zone-desc {
+  font-size: 0.68rem; color: var(--muted2); line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.danger-zone-btn {
+  padding: 0.5rem 1.2rem;
+  background: transparent; border: 0.5px solid var(--red);
+  border-radius: 8px; color: var(--red);
+  font-family: 'DM Mono', monospace; font-size: 0.67rem;
+  letter-spacing: 0.07em; cursor: pointer; transition: all 0.18s;
+}
+.danger-zone-btn:hover { background: rgba(224,92,110,0.1); }
