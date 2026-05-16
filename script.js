@@ -1076,14 +1076,6 @@ function switchExercise(ex) {
   document.getElementById('nav-'+ex).classList.add('active');
   document.getElementById('topbarMode').textContent=ex.charAt(0).toUpperCase()+ex.slice(1);
   document.getElementById('intervalModeTabs').style.display=ex==='intervals'?'flex':'none';
-  setControllerFabVisible(ex === 'intervals');
-  // Safety fallback: ensure FAB is visible after ad closes, even if AdSense delays things
-  if (ex === 'intervals') {
-    setTimeout(function () {
-      setFabBehind(false);
-      setControllerFabVisible(true);
-    }, 4000);
-  }
   document.getElementById('answerDisplay').textContent='?';
   document.getElementById('answerDisplay').classList.remove('revealed');
   document.getElementById('notesDisplay').textContent='press play to begin';
@@ -1098,6 +1090,9 @@ function switchExercise(ex) {
     window._saveTimer = setTimeout(saveProgress, 1500);
   }
   showAd();
+  // Apply FAB visibility AFTER showAd (which calls setFabBehind(true)), so the
+  // .visible class is already present when closeAd later calls setFabBehind(false).
+  setControllerFabVisible(ex === 'intervals');
 }
 
 // ═══════════════════════════════════════════════════════════
