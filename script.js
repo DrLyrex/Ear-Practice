@@ -1244,6 +1244,31 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fun
 });
 
 initAuthListener();
+
+// ── FAB visibility watchdog ─────────────────────────────────
+// Ensures the controller button is always visible on the intervals tab,
+// regardless of any race conditions with ads, auth, or sidebar.
+(function startFabWatchdog() {
+  function checkFab() {
+    if (state.exercise !== 'intervals') return;
+    var fab = document.getElementById('joystickFab');
+    if (!fab) return;
+    var adContainer = document.getElementById('adContainer');
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('controllerOverlay');
+    var adVisible  = adContainer && adContainer.style.display !== 'none';
+    var sidebarOpen = sidebar && sidebar.classList.contains('open');
+    var gameOpen   = overlay && overlay.classList.contains('open');
+    if (!adVisible && !sidebarOpen && !gameOpen) {
+      fab.classList.add('visible');
+      fab.classList.remove('behind');
+    }
+  }
+  setTimeout(checkFab, 300);
+  setTimeout(checkFab, 1500);
+  setTimeout(checkFab, 4500);
+})();
+
 // ═══════════════════════════════════════════════════════════
 //  CONTROLLER MODAL
 // ═══════════════════════════════════════════════════════════
