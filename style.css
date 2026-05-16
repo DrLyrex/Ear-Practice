@@ -944,6 +944,12 @@ body {
   pointer-events: auto;
   transform: translateY(0) scale(1);
 }
+/* CSS-level guarantee: show FAB whenever body says we're on intervals */
+body[data-page="intervals"] .joystick-fab:not(.behind) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
 .joystick-fab:hover {
   background: var(--bg4);
   transform: translateY(0) scale(1.08);

@@ -477,5 +477,57 @@
 </div>
 
 <script src="script.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     CONTROLLER MODAL
+════════════════════════════════════════════════ -->
+<div class="controller-overlay" id="controllerOverlay" onclick="closeControllerModal(event)">
+  <div class="controller-modal" id="controllerModal">
+    <button class="controller-modal-close" onclick="forceCloseControllerModal()" aria-label="Close">✕</button>
+
+    <!-- HUD -->
+    <div class="alien-game-hud">
+      <div class="alien-game-lives" id="alienGameLives"></div>
+      <div class="alien-game-score-wrap">
+        <span class="alien-game-score-label">SCORE</span>
+        <span class="alien-game-score" id="alienGameScore">0</span>
+      </div>
+    </div>
+
+    <canvas class="alien-canvas" id="alienCanvas"></canvas>
+
+    <!-- Quiz popup (shown when alien is clicked) -->
+    <div class="alien-quiz-popup" id="alienQuizPopup">
+      <div class="alien-quiz-label">What interval was that?</div>
+      <button class="alien-quiz-replay" id="alienQuizReplay" title="Replay">▶ Replay</button>
+      <div class="alien-quiz-btns" id="alienQuizBtns"></div>
+    </div>
+
+    <!-- Game over overlay -->
+    <div class="alien-game-over" id="alienGameOver">
+      <div class="game-over-title">Game Over</div>
+      <div class="game-over-sub">Final Score</div>
+      <div class="game-over-score">0</div>
+      <button class="game-over-restart" onclick="startAlienRain()">Play Again</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JOYSTICK FAB BUTTON
+════════════════════════════════════════════════ -->
+<button class="joystick-fab" id="joystickFab" title="Game Controls" onclick="openControllerModal()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+    <path d="M7 6h10a4 4 0 0 1 4 4l-1.5 6A3 3 0 0 1 16.6 18H15a3 3 0 0 1-2.12-.88L12 16.17l-.88.95A3 3 0 0 1 9 18H7.4a3 3 0 0 1-2.9-2L3 10a4 4 0 0 1 4-4z"/>
+    <rect x="8.25" y="9" width="1.5" height="4.5" rx="0.5" fill="var(--bg3)"/>
+    <rect x="6.75" y="10.5" width="4.5" height="1.5" rx="0.5" fill="var(--bg3)"/>
+    <circle cx="16" cy="10" r="0.85" fill="var(--bg3)"/>
+    <circle cx="17.5" cy="11.5" r="0.85" fill="var(--bg3)"/>
+    <circle cx="16" cy="13" r="0.85" fill="var(--bg3)"/>
+    <circle cx="14.5" cy="11.5" r="0.85" fill="var(--bg3)"/>
+  </svg>
+</button>
+
 </body>
 </html>

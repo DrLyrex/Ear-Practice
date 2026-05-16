@@ -1027,6 +1027,7 @@ window.showPage = function (page) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
   closeAccountDropdown();
+  document.body.setAttribute('data-page', page);
 
   if (page === 'home') {
     document.getElementById('page-home').classList.add('active');
@@ -1071,11 +1072,20 @@ function setControllerFabVisible(visible) {
 
 function switchExercise(ex) {
   document.getElementById('page-trainer').classList.add('active');
+  document.body.setAttribute('data-page', ex);
   state.exercise=ex; state.currentQ=null; state.answered=false;
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
   document.getElementById('nav-'+ex).classList.add('active');
   document.getElementById('topbarMode').textContent=ex.charAt(0).toUpperCase()+ex.slice(1);
   document.getElementById('intervalModeTabs').style.display=ex==='intervals'?'flex':'none';
+  setControllerFabVisible(ex === 'intervals');
+  // Safety fallback: ensure FAB is visible after ad closes, even if AdSense delays things
+  if (ex === 'intervals') {
+    setTimeout(function () {
+      setFabBehind(false);
+      setControllerFabVisible(true);
+    }, 4000);
+  }
   document.getElementById('answerDisplay').textContent='?';
   document.getElementById('answerDisplay').classList.remove('revealed');
   document.getElementById('notesDisplay').textContent='press play to begin';
@@ -1090,8 +1100,6 @@ function switchExercise(ex) {
     window._saveTimer = setTimeout(saveProgress, 1500);
   }
   showAd();
-  // Set FAB visibility after showAd so it's correct once the ad closes.
-  setControllerFabVisible(ex === 'intervals');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1124,9 +1132,7 @@ function showAd() {
     '<button class="ad-skip" id="adSkipBtn" disabled onclick="closeAd()">Skip in 2s</button>' +
     '</div>';
   container.style.display='flex';
-  // Note: no setFabBehind here — the ad overlay (z-index 200) already covers the FAB
-  // (z-index 80) naturally. Hiding it caused a race where closeAd sometimes failed to
-  // re-show it on the live domain.
+  setFabBehind(true);
   try { (window.adsbygoogle=window.adsbygoogle||[]).push({}); } catch(e) {}
   if (adSkipTimer) clearTimeout(adSkipTimer);
   if (adCloseTimer) clearTimeout(adCloseTimer);
@@ -1140,6 +1146,8 @@ function showAd() {
 window.closeAd = function () {
   clearTimeout(adCloseTimer); clearTimeout(adSkipTimer);
   document.getElementById('adContainer').style.display='none';
+  setFabBehind(false);
+  // Re-show the FAB in case AdSense interfered with the visibility state
   if (state.exercise === 'intervals') setControllerFabVisible(true);
 };
 
@@ -1244,31 +1252,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fun
 });
 
 initAuthListener();
-
-// ── FAB visibility watchdog ─────────────────────────────────
-// Ensures the controller button is always visible on the intervals tab,
-// regardless of any race conditions with ads, auth, or sidebar.
-(function startFabWatchdog() {
-  function checkFab() {
-    if (state.exercise !== 'intervals') return;
-    var fab = document.getElementById('joystickFab');
-    if (!fab) return;
-    var adContainer = document.getElementById('adContainer');
-    var sidebar = document.getElementById('sidebar');
-    var overlay = document.getElementById('controllerOverlay');
-    var adVisible  = adContainer && adContainer.style.display !== 'none';
-    var sidebarOpen = sidebar && sidebar.classList.contains('open');
-    var gameOpen   = overlay && overlay.classList.contains('open');
-    if (!adVisible && !sidebarOpen && !gameOpen) {
-      fab.classList.add('visible');
-      fab.classList.remove('behind');
-    }
-  }
-  setTimeout(checkFab, 300);
-  setTimeout(checkFab, 1500);
-  setTimeout(checkFab, 4500);
-})();
-
 // ═══════════════════════════════════════════════════════════
 //  CONTROLLER MODAL
 // ═══════════════════════════════════════════════════════════
