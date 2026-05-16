@@ -1090,8 +1090,7 @@ function switchExercise(ex) {
     window._saveTimer = setTimeout(saveProgress, 1500);
   }
   showAd();
-  // Apply FAB visibility AFTER showAd (which calls setFabBehind(true)), so the
-  // .visible class is already present when closeAd later calls setFabBehind(false).
+  // Set FAB visibility after showAd so it's correct once the ad closes.
   setControllerFabVisible(ex === 'intervals');
 }
 
@@ -1125,7 +1124,9 @@ function showAd() {
     '<button class="ad-skip" id="adSkipBtn" disabled onclick="closeAd()">Skip in 2s</button>' +
     '</div>';
   container.style.display='flex';
-  setFabBehind(true);
+  // Note: no setFabBehind here — the ad overlay (z-index 200) already covers the FAB
+  // (z-index 80) naturally. Hiding it caused a race where closeAd sometimes failed to
+  // re-show it on the live domain.
   try { (window.adsbygoogle=window.adsbygoogle||[]).push({}); } catch(e) {}
   if (adSkipTimer) clearTimeout(adSkipTimer);
   if (adCloseTimer) clearTimeout(adCloseTimer);
@@ -1139,8 +1140,6 @@ function showAd() {
 window.closeAd = function () {
   clearTimeout(adCloseTimer); clearTimeout(adSkipTimer);
   document.getElementById('adContainer').style.display='none';
-  setFabBehind(false);
-  // Re-show the FAB in case AdSense interfered with the visibility state
   if (state.exercise === 'intervals') setControllerFabVisible(true);
 };
 
