@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free browser-based ear training exercises for musicians: practice intervals, chords, and scales with synthesized piano audio.">
-    <title>Ear Trainer</title>
+    <meta name="description" content="Practice interval recognition by ear with synthesized piano tones, selectable intervals, score tracking, and instant feedback.">
+    <title>Intervals · Ear Trainer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231a1a1a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23e8d5a3'>♩</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css?v=2">
+    <link rel="stylesheet" href="intervals.css?v=2">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9438810281290905" crossorigin="anonymous"></script>
 
 </head>
-<body data-page="home" data-depth="">
+<body data-page="intervals" data-depth="">
 
 
 <!-- ═══════════════════════════════════════════════
@@ -209,92 +210,118 @@
 
 
 <!-- ═══════════════════════════════════════════════
-     HOME PAGE
+     TRAINER PAGE
 ════════════════════════════════════════════════ -->
-<div class="page active" id="page-home">
-  <div class="home-hero">
-    <span class="hero-eyebrow">Piano · Ear Training</span>
-    <h1 class="hero-title">Train your <em>ear</em>,<br>master your music.</h1>
-    <p class="hero-sub">Identify intervals, chords, and scales by ear. Real-time synthesis, no samples. Progress syncs across all your devices.</p>
-    <button class="hero-cta" onclick="goToPage('intervals')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      Start Training
-    </button>
-    <div class="home-features">
-      <div class="feature-card">
-        <div class="feature-icon">♩</div>
-        <div class="feature-title">Intervals</div>
-        <div class="feature-desc">Recognise the distance between two pitches — the foundation of all music theory.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♪</div>
-        <div class="feature-title">Chords</div>
-        <div class="feature-desc">Identify major, minor, diminished, augmented and extended chord colours.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♫</div>
-        <div class="feature-title">Scales</div>
-        <div class="feature-desc">Hear the mood of modes and scales — from bright Lydian to dark Locrian.</div>
-      </div>
+<div class="page active" id="page-trainer">
+<div class="main">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Score</div>
+      <div class="stat-value" id="score">0</div>
     </div>
-    <div class="home-exercises">
-      <div class="section-label">Choose an exercise</div>
-      <div class="exercise-cards">
-        <button class="ex-card" onclick="goToPage('intervals')">
-          <div class="ex-card-icon">♩</div>
-          <div class="ex-card-name">Intervals</div>
-          <div class="ex-card-count">12 intervals</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('chords')">
-          <div class="ex-card-icon">♪</div>
-          <div class="ex-card-name">Chords</div>
-          <div class="ex-card-count">11 chord types</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('scales')">
-          <div class="ex-card-icon">♫</div>
-          <div class="ex-card-name">Scales</div>
-          <div class="ex-card-count">14 scale modes</div>
-        </button>
-      </div>
+    <div class="stat-card">
+      <div class="stat-label">Streak</div>
+      <div class="stat-value" id="streak">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Accuracy</div>
+      <div class="stat-value" id="accuracy">—</div>
     </div>
   </div>
 
-  <section class="content-section">
-    <div class="content-eyebrow">How practice works</div>
-    <h2 class="content-title">A practical ear training routine</h2>
-    <p class="content-lede">Ear Trainer is built around short, repeatable listening sessions. Each exercise plays synthesized piano tones in the browser, asks you to identify what you heard, and keeps score so you can notice patterns over time.</p>
+  <div class="streak-bar" id="streakBar"></div>
 
-    <div class="content-grid">
-      <article class="content-card">
-        <h2>Intervals</h2>
-        <p>Intervals teach the distance between two notes. Start with a few familiar shapes like major thirds, perfect fifths, and octaves, then add smaller steps once those sounds feel stable.</p>
-      </article>
-      <article class="content-card">
-        <h2>Chords</h2>
-        <p>Chord practice focuses on color and tension. Major, minor, diminished, augmented, suspended, and seventh chords each have a different emotional pull that becomes easier to recognize with repetition.</p>
-      </article>
-      <article class="content-card">
-        <h2>Scales</h2>
-        <p>Scale recognition trains the mood of a whole pattern. Modes, pentatonic scales, blues, whole tone, and diminished sounds all leave different clues in the ear.</p>
-      </article>
+  <div class="main-panel">
+    <div class="mode-tabs" id="intervalModeTabs">
+      <button class="mode-tab" onclick="setPlayMode('harmonic',this)">Harmonic</button>
+      <button class="mode-tab active" onclick="setPlayMode('ascending',this)">Ascending</button>
+      <button class="mode-tab" onclick="setPlayMode('descending',this)">Descending</button>
     </div>
 
-    <section class="content-block">
-      <h2>Suggested practice</h2>
-      <p>Practice for five to ten minutes at a time, keep the first sessions narrow, and sing the answer internally before clicking. Accuracy matters more than speed. When a sound becomes obvious, add one or two new choices and keep listening for contrast.</p>
-    </section>
+    <div class="play-area">
+      <div class="notes-display" id="notesDisplay">press play to begin</div>
+      <div class="answer-display" id="answerDisplay">?</div>
+      <div class="scale-notes-tag" id="scaleNotesTag"></div>
 
-    <footer class="site-footer">
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-    </footer>
+      <button class="btn-play" onclick="playCurrentSound()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Play
+      </button>
+
+      <div class="divider"></div>
+      <div class="answer-grid" id="answerGrid"></div>
+      <div class="feedback-msg" id="feedbackMsg"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion(); playCurrentSound()">Next →</button>
+    </div>
+  </div>
+  <div class="settings-panel" id="settingsPanel">
+    <h3 id="settingsTitle">Intervals to practice</h3>
+    <div class="toggle-row" id="itemToggles"></div>
+  </div>
+
+  <section class="content-block">
+    <h2>Interval training tips</h2>
+    <p>Intervals are the distance between two notes. If the full list feels overwhelming, begin with three strong anchors: major third, perfect fifth, and octave. Listen to whether the second note feels close, far, stable, bright, tense, or resolved.</p>
+    <p>Use ascending, descending, and harmonic modes to hear the same interval from different angles. Singing the sound before choosing an answer helps connect recognition with musicianship instead of pure guessing.</p>
   </section>
+
+</div>
 </div>
 
 
-<script src="main.js?v=2"></script>
+<!-- ═══════════════════════════════════════════════
+     CONTROLLER MODAL
+════════════════════════════════════════════════ -->
+<div class="controller-overlay" id="controllerOverlay" onclick="closeControllerModal(event)">
+  <div class="controller-modal" id="controllerModal">
+    <button class="controller-modal-close" onclick="forceCloseControllerModal()" aria-label="Close">✕</button>
 
+    <!-- HUD -->
+    <div class="alien-game-hud">
+      <div class="alien-game-lives" id="alienGameLives"></div>
+      <div class="alien-game-score-wrap">
+        <span class="alien-game-score-label">SCORE</span>
+        <span class="alien-game-score" id="alienGameScore">0</span>
+      </div>
+    </div>
+
+    <canvas class="alien-canvas" id="alienCanvas"></canvas>
+
+    <!-- Quiz popup (shown when alien is clicked) -->
+    <div class="alien-quiz-popup" id="alienQuizPopup">
+      <div class="alien-quiz-label">What interval was that?</div>
+      <button class="alien-quiz-replay" id="alienQuizReplay" title="Replay">▶ Replay</button>
+      <div class="alien-quiz-btns" id="alienQuizBtns"></div>
+    </div>
+
+    <!-- Game over overlay -->
+    <div class="alien-game-over" id="alienGameOver">
+      <div class="game-over-title">Game Over</div>
+      <div class="game-over-sub">Final Score</div>
+      <div class="game-over-score">0</div>
+      <button class="game-over-restart" onclick="startAlienRain()">Play Again</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JOYSTICK FAB BUTTON
+════════════════════════════════════════════════ -->
+<button class="joystick-fab" id="joystickFab" title="Game Controls" onclick="openControllerModal()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+    <path d="M7 6h10a4 4 0 0 1 4 4l-1.5 6A3 3 0 0 1 16.6 18H15a3 3 0 0 1-2.12-.88L12 16.17l-.88.95A3 3 0 0 1 9 18H7.4a3 3 0 0 1-2.9-2L3 10a4 4 0 0 1 4-4z"/>
+    <rect x="8.25" y="9" width="1.5" height="4.5" rx="0.5" fill="var(--bg3)"/>
+    <rect x="6.75" y="10.5" width="4.5" height="1.5" rx="0.5" fill="var(--bg3)"/>
+    <circle cx="16" cy="10" r="0.85" fill="var(--bg3)"/>
+    <circle cx="17.5" cy="11.5" r="0.85" fill="var(--bg3)"/>
+    <circle cx="16" cy="13" r="0.85" fill="var(--bg3)"/>
+    <circle cx="14.5" cy="11.5" r="0.85" fill="var(--bg3)"/>
+  </svg>
+</button>
+
+
+<script src="intervals.js?v=2"></script>
+<script src="main.js?v=2"></script>
 </body>
 </html>

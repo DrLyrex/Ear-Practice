@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free browser-based ear training exercises for musicians: practice intervals, chords, and scales with synthesized piano audio.">
-    <title>Ear Trainer</title>
+    <meta name="description" content="Adjust Ear Trainer practice settings, root note behavior, theme, and account preferences.">
+    <title>Settings · Ear Trainer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231a1a1a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23e8d5a3'>♩</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9438810281290905" crossorigin="anonymous"></script>
 
 </head>
-<body data-page="home" data-depth="">
+<body data-page="settings" data-depth="">
 
 
 <!-- ═══════════════════════════════════════════════
@@ -209,88 +209,46 @@
 
 
 <!-- ═══════════════════════════════════════════════
-     HOME PAGE
+     SETTINGS PAGE
 ════════════════════════════════════════════════ -->
-<div class="page active" id="page-home">
-  <div class="home-hero">
-    <span class="hero-eyebrow">Piano · Ear Training</span>
-    <h1 class="hero-title">Train your <em>ear</em>,<br>master your music.</h1>
-    <p class="hero-sub">Identify intervals, chords, and scales by ear. Real-time synthesis, no samples. Progress syncs across all your devices.</p>
-    <button class="hero-cta" onclick="goToPage('intervals')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      Start Training
-    </button>
-    <div class="home-features">
-      <div class="feature-card">
-        <div class="feature-icon">♩</div>
-        <div class="feature-title">Intervals</div>
-        <div class="feature-desc">Recognise the distance between two pitches — the foundation of all music theory.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♪</div>
-        <div class="feature-title">Chords</div>
-        <div class="feature-desc">Identify major, minor, diminished, augmented and extended chord colours.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♫</div>
-        <div class="feature-title">Scales</div>
-        <div class="feature-desc">Hear the mood of modes and scales — from bright Lydian to dark Locrian.</div>
-      </div>
-    </div>
-    <div class="home-exercises">
-      <div class="section-label">Choose an exercise</div>
-      <div class="exercise-cards">
-        <button class="ex-card" onclick="goToPage('intervals')">
-          <div class="ex-card-icon">♩</div>
-          <div class="ex-card-name">Intervals</div>
-          <div class="ex-card-count">12 intervals</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('chords')">
-          <div class="ex-card-icon">♪</div>
-          <div class="ex-card-name">Chords</div>
-          <div class="ex-card-count">11 chord types</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('scales')">
-          <div class="ex-card-icon">♫</div>
-          <div class="ex-card-name">Scales</div>
-          <div class="ex-card-count">14 scale modes</div>
-        </button>
+<div class="page" id="page-settings">
+  <div class="main">
+    <div class="main-panel">
+      <h1 class="hero-title">Settings</h1>
+      <div class="settings-panel">
+        <div class="sb-label">Root note</div>
+        <div class="sb-pills">
+          <button class="pill-btn active" id="rb-random" onclick="setRoot('random',this)">Random</button>
+          <button class="pill-btn" id="rb-C4" onclick="setRoot('C4',this)">C</button>
+          <button class="pill-btn" id="rb-C#4" onclick="setRoot('C#4',this)">C#</button>
+          <button class="pill-btn" id="rb-D4" onclick="setRoot('D4',this)">D</button>
+          <button class="pill-btn" id="rb-D#4" onclick="setRoot('D#4',this)">D#</button>
+          <button class="pill-btn" id="rb-E4" onclick="setRoot('E4',this)">E</button>
+          <button class="pill-btn" id="rb-F4" onclick="setRoot('F4',this)">F</button>
+          <button class="pill-btn" id="rb-F#4" onclick="setRoot('F#4',this)">F#</button>
+          <button class="pill-btn" id="rb-G4" onclick="setRoot('G4',this)">G</button>
+          <button class="pill-btn" id="rb-G#4" onclick="setRoot('G#4',this)">G#</button>
+          <button class="pill-btn" id="rb-A4" onclick="setRoot('A4',this)">A</button>
+          <button class="pill-btn" id="rb-A#4" onclick="setRoot('A#4',this)">A#</button>
+          <button class="pill-btn" id="rb-B4" onclick="setRoot('B4',this)">B</button>
+        </div>
+        <div class="sb-label">Theme</div>
+        <div class="sb-pills">
+          <button class="pill-btn" id="themeDark" onclick="setTheme('dark',this)">Dark</button>
+          <button class="pill-btn" id="themeWhite" onclick="setTheme('white',this)">White</button>
+          <button class="pill-btn active" id="themeAuto" onclick="setTheme('auto',this)">Auto</button>
+        </div>
       </div>
     </div>
+
+    <!-- Danger zone — only visible when signed in -->
+    <div class="main-panel danger-zone" id="dangerZonePanel" style="display:none;">
+      <div class="danger-zone-label">Danger Zone</div>
+      <p class="danger-zone-desc">Permanently delete your account and all associated data. This cannot be undone.</p>
+      <button class="danger-zone-btn" onclick="confirmDeleteAccount()">Delete Account</button>
+    </div>
+
   </div>
-
-  <section class="content-section">
-    <div class="content-eyebrow">How practice works</div>
-    <h2 class="content-title">A practical ear training routine</h2>
-    <p class="content-lede">Ear Trainer is built around short, repeatable listening sessions. Each exercise plays synthesized piano tones in the browser, asks you to identify what you heard, and keeps score so you can notice patterns over time.</p>
-
-    <div class="content-grid">
-      <article class="content-card">
-        <h2>Intervals</h2>
-        <p>Intervals teach the distance between two notes. Start with a few familiar shapes like major thirds, perfect fifths, and octaves, then add smaller steps once those sounds feel stable.</p>
-      </article>
-      <article class="content-card">
-        <h2>Chords</h2>
-        <p>Chord practice focuses on color and tension. Major, minor, diminished, augmented, suspended, and seventh chords each have a different emotional pull that becomes easier to recognize with repetition.</p>
-      </article>
-      <article class="content-card">
-        <h2>Scales</h2>
-        <p>Scale recognition trains the mood of a whole pattern. Modes, pentatonic scales, blues, whole tone, and diminished sounds all leave different clues in the ear.</p>
-      </article>
-    </div>
-
-    <section class="content-block">
-      <h2>Suggested practice</h2>
-      <p>Practice for five to ten minutes at a time, keep the first sessions narrow, and sing the answer internally before clicking. Accuracy matters more than speed. When a sound becomes obvious, add one or two new choices and keep listening for contrast.</p>
-    </section>
-
-    <footer class="site-footer">
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-    </footer>
-  </section>
 </div>
 
 

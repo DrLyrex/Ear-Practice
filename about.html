@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free browser-based ear training exercises for musicians: practice intervals, chords, and scales with synthesized piano audio.">
-    <title>Ear Trainer</title>
+    <meta name="description" content="Learn about Ear Trainer, a free music practice project built to help musicians improve interval, chord, and scale recognition.">
+    <title>About · Ear Trainer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231a1a1a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23e8d5a3'>♩</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9438810281290905" crossorigin="anonymous"></script>
 
 </head>
-<body data-page="home" data-depth="">
+<body data-page="about" data-depth="">
 
 
 <!-- ═══════════════════════════════════════════════
@@ -209,88 +209,52 @@
 
 
 <!-- ═══════════════════════════════════════════════
-     HOME PAGE
+     ABOUT PAGE
 ════════════════════════════════════════════════ -->
-<div class="page active" id="page-home">
-  <div class="home-hero">
-    <span class="hero-eyebrow">Piano · Ear Training</span>
-    <h1 class="hero-title">Train your <em>ear</em>,<br>master your music.</h1>
-    <p class="hero-sub">Identify intervals, chords, and scales by ear. Real-time synthesis, no samples. Progress syncs across all your devices.</p>
-    <button class="hero-cta" onclick="goToPage('intervals')">
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <h1 class="about-hero-text">About the Project</h1>
+    <p class="about-intro">Hi, I’m Lyre Zhukov.</p>
+    <p class="about-body">I’m a 17-year-old musician, and like most people serious about their craft, I knew I needed to work on my ear training. The problem? Every website I found was either hidden behind a massive paywall, looked like it hadn't been updated since 2005, or was just plain frustrating to use.</p>
+    <p class="about-body">I got tired of waiting for a better tool to show up, so I decided to build one myself.</p>
+
+    <div class="about-divider"></div>
+
+    <h2 class="about-section-title">By a Musician, For Musicians</h2>
+    <p class="about-body">I originally built this site as a personal tool to help me sharpen my own hearing. But as the project grew, I realized I probably wasn't the only person looking for a clean, effective, and modern way to practice.</p>
+    <p class="about-body">The exercises use browser synthesis instead of recorded samples, which keeps the tool fast and consistent. The goal is simple: give musicians a quiet place to repeat the sounds that matter until they become familiar.</p>
+
+    <div class="about-pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Focused practice</div>
+        <div class="pillar-text">Choose only the intervals, chords, or scales you want to study instead of being thrown into every possible answer at once.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">Progress that stays</div>
+        <div class="pillar-text">Practice as a guest with local progress, or create an optional account to sync scores and settings across devices.</div>
+      </div>
+    </div>
+
+    <h2 class="about-section-title">Why is it free?</h2>
+    <p class="about-body">Because learning music is hard enough as it is. You shouldn't have to deal with user interfaces that feel outdated or subscription fees just to train your ears.</p>
+    <p class="about-body">I’m publishing this for absolutely free because I want us all to get better at what we do. No catches, no gatekeeping — just a straightforward tool to help you hear music more clearly.</p>
+    <p class="about-body">Enjoy the training, and let's make something great.</p>
+    <div class="about-signature">— Lyre</div>
+
+    <button class="about-start-btn" onclick="goToPage('intervals')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      Start Training
+      Begin Training
     </button>
-    <div class="home-features">
-      <div class="feature-card">
-        <div class="feature-icon">♩</div>
-        <div class="feature-title">Intervals</div>
-        <div class="feature-desc">Recognise the distance between two pitches — the foundation of all music theory.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♪</div>
-        <div class="feature-title">Chords</div>
-        <div class="feature-desc">Identify major, minor, diminished, augmented and extended chord colours.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♫</div>
-        <div class="feature-title">Scales</div>
-        <div class="feature-desc">Hear the mood of modes and scales — from bright Lydian to dark Locrian.</div>
-      </div>
-    </div>
-    <div class="home-exercises">
-      <div class="section-label">Choose an exercise</div>
-      <div class="exercise-cards">
-        <button class="ex-card" onclick="goToPage('intervals')">
-          <div class="ex-card-icon">♩</div>
-          <div class="ex-card-name">Intervals</div>
-          <div class="ex-card-count">12 intervals</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('chords')">
-          <div class="ex-card-icon">♪</div>
-          <div class="ex-card-name">Chords</div>
-          <div class="ex-card-count">11 chord types</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('scales')">
-          <div class="ex-card-icon">♫</div>
-          <div class="ex-card-name">Scales</div>
-          <div class="ex-card-count">14 scale modes</div>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <section class="content-section">
-    <div class="content-eyebrow">How practice works</div>
-    <h2 class="content-title">A practical ear training routine</h2>
-    <p class="content-lede">Ear Trainer is built around short, repeatable listening sessions. Each exercise plays synthesized piano tones in the browser, asks you to identify what you heard, and keeps score so you can notice patterns over time.</p>
-
-    <div class="content-grid">
-      <article class="content-card">
-        <h2>Intervals</h2>
-        <p>Intervals teach the distance between two notes. Start with a few familiar shapes like major thirds, perfect fifths, and octaves, then add smaller steps once those sounds feel stable.</p>
-      </article>
-      <article class="content-card">
-        <h2>Chords</h2>
-        <p>Chord practice focuses on color and tension. Major, minor, diminished, augmented, suspended, and seventh chords each have a different emotional pull that becomes easier to recognize with repetition.</p>
-      </article>
-      <article class="content-card">
-        <h2>Scales</h2>
-        <p>Scale recognition trains the mood of a whole pattern. Modes, pentatonic scales, blues, whole tone, and diminished sounds all leave different clues in the ear.</p>
-      </article>
-    </div>
-
-    <section class="content-block">
-      <h2>Suggested practice</h2>
-      <p>Practice for five to ten minutes at a time, keep the first sessions narrow, and sing the answer internally before clicking. Accuracy matters more than speed. When a sound becomes obvious, add one or two new choices and keep listening for contrast.</p>
-    </section>
 
     <footer class="site-footer">
-      <a href="about.html">About</a>
+      <a href="index.html">Home</a>
       <a href="contact.html">Contact</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
     </footer>
-  </section>
+  </div>
 </div>
 
 

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free browser-based ear training exercises for musicians: practice intervals, chords, and scales with synthesized piano audio.">
-    <title>Ear Trainer</title>
+    <meta name="description" content="View optional Ear Trainer profile progress, streaks, practice history, and synced account settings.">
+    <title>Profile · Ear Trainer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231a1a1a'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23e8d5a3'>♩</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9438810281290905" crossorigin="anonymous"></script>
 
 </head>
-<body data-page="home" data-depth="">
+<body data-page="profile" data-depth="">
 
 
 <!-- ═══════════════════════════════════════════════
@@ -209,88 +209,93 @@
 
 
 <!-- ═══════════════════════════════════════════════
-     HOME PAGE
+     PROFILE PAGE
 ════════════════════════════════════════════════ -->
-<div class="page active" id="page-home">
-  <div class="home-hero">
-    <span class="hero-eyebrow">Piano · Ear Training</span>
-    <h1 class="hero-title">Train your <em>ear</em>,<br>master your music.</h1>
-    <p class="hero-sub">Identify intervals, chords, and scales by ear. Real-time synthesis, no samples. Progress syncs across all your devices.</p>
-    <button class="hero-cta" onclick="goToPage('intervals')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      Start Training
-    </button>
-    <div class="home-features">
-      <div class="feature-card">
-        <div class="feature-icon">♩</div>
-        <div class="feature-title">Intervals</div>
-        <div class="feature-desc">Recognise the distance between two pitches — the foundation of all music theory.</div>
+<div class="page" id="page-profile">
+  <div class="main">
+    <div class="profile-hero">
+      <!-- Avatar with click-to-upload overlay (only shown when signed in) -->
+      <div class="profile-avatar-wrapper" id="profileAvatarWrapper">
+        <div class="profile-avatar-lg" id="profileAvatarLg">?</div>
+        <label class="profile-avatar-upload-btn" id="profileAvatarUploadBtn" title="Change photo" style="display:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17v3h3l8.6-8.6-3-3L3 17zm14.7-9.7a1 1 0 0 0 0-1.4l-1.6-1.6a1 1 0 0 0-1.4 0l-1.3 1.3 3 3 1.3-1.3z"/></svg>
+          <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="handleProfilePicChange(event)">
+        </label>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">♪</div>
-        <div class="feature-title">Chords</div>
-        <div class="feature-desc">Identify major, minor, diminished, augmented and extended chord colours.</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">♫</div>
-        <div class="feature-title">Scales</div>
-        <div class="feature-desc">Hear the mood of modes and scales — from bright Lydian to dark Locrian.</div>
+      <div class="profile-hero-info">
+        <h1 class="profile-display-name" id="profileDisplayName">Guest</h1>
+        <div class="profile-streak-badge" id="profileStreakBadge">
+          <svg class="profile-streak-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C8.7 6 7 9 7 12.5 7 16.6 10.4 20 14.5 20 17.6 20 20 17.6 20 14.5 20 10.4 16.6 7 12.5 7 12 4 12 2 12 2z"/>
+          </svg>
+          <span id="profileStreakValue">0</span>
+        </div>
+        <div class="profile-email-text" id="profileEmail">—</div>
+        <div class="profile-member-since" id="profileMemberSince"></div>
       </div>
     </div>
-    <div class="home-exercises">
-      <div class="section-label">Choose an exercise</div>
-      <div class="exercise-cards">
-        <button class="ex-card" onclick="goToPage('intervals')">
-          <div class="ex-card-icon">♩</div>
-          <div class="ex-card-name">Intervals</div>
-          <div class="ex-card-count">12 intervals</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('chords')">
-          <div class="ex-card-icon">♪</div>
-          <div class="ex-card-name">Chords</div>
-          <div class="ex-card-count">11 chord types</div>
-        </button>
-        <button class="ex-card" onclick="goToPage('scales')">
-          <div class="ex-card-icon">♫</div>
-          <div class="ex-card-name">Scales</div>
-          <div class="ex-card-count">14 scale modes</div>
-        </button>
+
+    <div class="profile-stats-grid">
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileTotalScore">—</div>
+        <div class="profile-stat-label">Total Score</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileTotalAnswered">—</div>
+        <div class="profile-stat-label">Answered</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileAccuracy">—</div>
+        <div class="profile-stat-label">Accuracy</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="profileBestStreak">—</div>
+        <div class="profile-stat-label">Best Accuracy Streak</div>
+      </div>
+    </div>
+
+    <div class="profile-graph-panel">
+      <div class="profile-graph-header">
+        <div class="profile-graph-title">Activity Graph</div>
+      </div>
+      <div class="profile-graph" id="profileExerciseGraph"></div>
+    </div>
+
+    <!-- Edit display name -->
+    <div class="main-panel profile-edit-panel" id="profileEditPanel" style="display:none;">
+      <h3 class="profile-section-title">Edit Profile</h3>
+      <div class="auth-field">
+        <label class="auth-label">Display Name</label>
+        <input class="auth-input" id="profileNameInput" type="text" placeholder="Your name">
+      </div>
+      <div class="auth-error" id="profileEditError"></div>
+      <div class="auth-success" id="profileEditSuccess"></div>
+      <div style="display:flex;gap:8px;margin-top:0.75rem;">
+        <button class="auth-submit" style="flex:1;" onclick="saveDisplayName()">Save</button>
+        <button class="auth-guest-btn" style="flex:1;margin-top:0;" onclick="document.getElementById('profileEditPanel').style.display='none'">Cancel</button>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="profile-action-btn" id="profileEditBtn" onclick="openProfileEdit()" style="display:none;">
+        ✎ Edit Name
+      </button>
+      <button class="profile-action-btn profile-action-danger" id="profileSignOutBtn" onclick="signOut()" style="display:none;">
+        Sign Out
+      </button>
+      <button class="profile-action-btn" id="profileSignInBtn" onclick="openAuthModal()">
+        Sign In / Register
+      </button>
+    </div>
+
+    <div class="profile-guest-note" id="profileGuestNote">
+      <div class="profile-guest-icon">♩</div>
+      <div class="profile-guest-text">
+        <strong>Playing as guest</strong><br>
+        Your progress is saved locally on this device. Sign in to sync across all your devices.
       </div>
     </div>
   </div>
-
-  <section class="content-section">
-    <div class="content-eyebrow">How practice works</div>
-    <h2 class="content-title">A practical ear training routine</h2>
-    <p class="content-lede">Ear Trainer is built around short, repeatable listening sessions. Each exercise plays synthesized piano tones in the browser, asks you to identify what you heard, and keeps score so you can notice patterns over time.</p>
-
-    <div class="content-grid">
-      <article class="content-card">
-        <h2>Intervals</h2>
-        <p>Intervals teach the distance between two notes. Start with a few familiar shapes like major thirds, perfect fifths, and octaves, then add smaller steps once those sounds feel stable.</p>
-      </article>
-      <article class="content-card">
-        <h2>Chords</h2>
-        <p>Chord practice focuses on color and tension. Major, minor, diminished, augmented, suspended, and seventh chords each have a different emotional pull that becomes easier to recognize with repetition.</p>
-      </article>
-      <article class="content-card">
-        <h2>Scales</h2>
-        <p>Scale recognition trains the mood of a whole pattern. Modes, pentatonic scales, blues, whole tone, and diminished sounds all leave different clues in the ear.</p>
-      </article>
-    </div>
-
-    <section class="content-block">
-      <h2>Suggested practice</h2>
-      <p>Practice for five to ten minutes at a time, keep the first sessions narrow, and sing the answer internally before clicking. Accuracy matters more than speed. When a sound becomes obvious, add one or two new choices and keep listening for contrast.</p>
-    </section>
-
-    <footer class="site-footer">
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-    </footer>
-  </section>
 </div>
 
 
